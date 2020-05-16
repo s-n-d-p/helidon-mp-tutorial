@@ -16,8 +16,8 @@ public class GreetingProvider {
         setMessage(message);
     }
 
-    public AtomicReference<String> getMessage() {
-        return message;
+    public String getMessage() {
+        return message.get();
     }
 
     void setMessage(String message) {
