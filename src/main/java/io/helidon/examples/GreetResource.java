@@ -3,6 +3,7 @@ package io.helidon.examples;
 import java.util.Collections;
 
 import javax.enterprise.context.RequestScoped;
+import javax.inject.Inject;
 import javax.json.Json;
 import javax.json.JsonBuilderFactory;
 import javax.json.JsonObject;
@@ -18,10 +19,22 @@ import javax.ws.rs.core.MediaType;
 public class GreetResource {
 
     private static final JsonBuilderFactory JSON = Json.createBuilderFactory(Collections.emptyMap());
+    private final GreetingProvider greetingProvider;
+
+    @Inject
+    public GreetResource(GreetingProvider greetingProvider) {
+        this.greetingProvider = greetingProvider;
+    }
 
     @GET // accepts HTTP GET method
     @Produces(MediaType.APPLICATION_JSON) // this method will return JSON data
     public JsonObject getDefaultMessage() {
-        return JSON.createObjectBuilder().add("message", "Hello World").build();
+        return createResponse("World");
+    }
+
+    private JsonObject createResponse(String who) {
+        String msg = String.format("%s %s!", greetingProvider.getMessage(), who);
+
+        return JSON.createObjectBuilder().add("message", msg).build();
     }
 }
