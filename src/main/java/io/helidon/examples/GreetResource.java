@@ -16,6 +16,8 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
+import org.eclipse.microprofile.metrics.annotation.Timed;
+
 @Path("/greet") // set the path for this resource
 @RequestScoped // define this bean as RequestScoped => request scope is active only for the
                // duration of one web service invocation and it is destroyed at the end of that
@@ -32,6 +34,7 @@ public class GreetResource {
 
     @GET // accepts HTTP GET method
     @Produces(MediaType.APPLICATION_JSON) // this method will return JSON data
+    @Timed
     public JsonObject getDefaultMessage() {
         return createResponse("World");
     }
